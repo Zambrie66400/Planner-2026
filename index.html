@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="ms" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planner 2026</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .gradient-bg {
+      background-color: #1e3c72;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(244, 208, 63, 0.25) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(212, 175, 55, 0.2) 0%, transparent 40%),
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(212, 175, 55, 0.08) 35px, rgba(212, 175, 55, 0.08) 70px),
+        repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(244, 208, 63, 0.06) 35px, rgba(244, 208, 63, 0.06) 70px),
+        linear-gradient(135deg, #1e3c72 0%, #2a5298 30%, #1e4a7a 60%, #2a5298 90%, #d4af37 100%);
+      position: relative;
+    }
+    
+    .gradient-bg::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.15) 2px, transparent 2px),
+        radial-gradient(circle at 85% 25%, rgba(212, 175, 55, 0.15) 2px, transparent 2px),
+        radial-gradient(circle at 45% 85%, rgba(212, 175, 55, 0.15) 2px, transparent 2px),
+        radial-gradient(circle at 65% 45%, rgba(244, 208, 63, 0.12) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 25% 65%, rgba(244, 208, 63, 0.12) 1.5px, transparent 1.5px);
+      background-size: 80px 80px, 100px 100px, 90px 90px, 60px 60px, 70px 70px;
+      background-position: 0 0, 40px 50px, 20px 80px, 10px 10px, 50px 30px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    
+    .gradient-bg::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        linear-gradient(30deg, transparent 48%, rgba(212, 175, 55, 0.05) 49%, rgba(212, 175, 55, 0.05) 51%, transparent 52%),
+        linear-gradient(60deg, transparent 48%, rgba(244, 208, 63, 0.04) 49%, rgba(244, 208, 63, 0.04) 51%, transparent 52%),
+        linear-gradient(120deg, transparent 48%, rgba(212, 175, 55, 0.05) 49%, rgba(212, 175, 55, 0.05) 51%, transparent 52%);
+      background-size: 100px 100px, 80px 80px, 120px 120px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    
+    .gradient-card {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(30, 60, 114, 0.1) 100%);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+    
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+      color: #1e3c72;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+    }
+    
+    .btn-blue {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-blue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(30, 60, 114, 0.4);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline:hover {
+      background: rgba(212, 175, 55, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .title-text {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .activity-card {
+      background: white;
+      border-left: 4px solid #d4af37;
+      transition: all 0.3s ease;
+    }
+    
+    .activity-card:hover {
+      transform: translateX(5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tab-active {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+      color: #1e3c72;
+      font-weight: 600;
+    }
+    
+    .tab-inactive {
+      background: transparent;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .daily-grid {
+      display: grid;
+      gap: 8px;
+    }
+    
+    .time-slot {
+      background: white;
+      border-left: 3px solid #d4af37;
+      padding: 12px;
+      border-radius: 8px;
+      min-height: 60px;
+      transition: all 0.3s ease;
+    }
+    
+    .time-slot:hover {
+      transform: translateX(3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .weekly-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    
+    .day-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 200px;
+      border-top: 4px solid #d4af37;
+      transition: all 0.3s ease;
+    }
+    
+    .day-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .day-card.weekend {
+      border-top-color: #2a5298;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(30, 60, 114, 0.05) 100%);
+    }
+    
+    .week-number {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+      color: #1e3c72;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+    }
+    
+    .notification-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      z-index: 2000;
+      animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .notification-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1999;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes popIn {
+      0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .notification-icon {
+      animation: bounce 1s ease-in-out infinite;
+    }
+    
+    .notification-item {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(30, 60, 114, 0.1) 100%);
+      border-left: 4px solid #d4af37;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .notification-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="gradient-bg h-full overflow-auto">
+  <div class="min-h-full w-full p-4 md:p-6"><!-- Notification Modal -->
+   <div id="notificationModal" class="hidden">
+    <div class="notification-backdrop" onclick="closeNotificationModal()"></div>
+    <div class="notification-modal">
+     <div class="text-center mb-6">
+      <div class="notification-icon w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+       <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+       </svg>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">🔔 Peringatan Aktiviti!</h2>
+      <p class="text-gray-600 text-sm">Anda mempunyai aktiviti yang perlu diberi perhatian</p>
+     </div>
+     <div id="notificationList" class="max-h-96 overflow-y-auto mb-6"><!-- Notifications will be inserted here -->
+     </div>
+     <div class="flex gap-3"><button onclick="closeNotificationModal()" class="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-bold py-3 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"> Tutup </button> <button onclick="snoozeNotifications()" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-3 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"> Ingatkan 5 Minit Lagi </button>
+     </div>
+    </div>
+   </div><!-- Welcome Popup Modal -->
+   <div id="welcomeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl transform transition-all">
+     <div class="text-center mb-6">
+      <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+       <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+       </svg>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-800 mb-2">Selamat Datang!</h2>
+      <p class="text-gray-600 text-sm">Sila daftar maklumat anda untuk mula menggunakan Planner 2026</p>
+     </div>
+     <form id="welcomeForm" class="space-y-4">
+      <div><label class="block text-gray-700 text-sm font-semibold mb-2">Nama Pengguna *</label> <input type="text" id="modalUserName" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-yellow-500 focus:outline-none text-gray-800 transition-all" placeholder="Masukkan nama anda">
+      </div>
+      <div><label class="block text-gray-700 text-sm font-semibold mb-2">Nama Sekolah *</label> <input type="text" id="modalSchoolName" required class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-yellow-500 focus:outline-none text-gray-800 transition-all" placeholder="Masukkan nama sekolah">
+      </div><button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-bold py-3 rounded-lg hover:shadow-lg transform hover:scale-105 transition-all"> Daftar Sekarang </button>
+     </form>
+    </div>
+   </div><!-- Header -->
+   <div class="gradient-card rounded-2xl p-6 mb-6 shadow-xl">
+    <div class="flex items-center justify-between mb-4">
+     <div class="flex-1">
+      <h1 id="plannerTitle" class="title-text text-5xl md:text-6xl font-bold mb-3" style="text-shadow: 3px 3px 6px rgba(0,0,0,0.3), -1px -1px 2px rgba(255,255,255,0.1);">Planner 2026</h1><!-- Display User Info -->
+      <div id="userInfoDisplay" class="hidden">
+       <p class="text-white text-base md:text-lg font-semibold" id="displayUserName"></p>
+       <p class="text-white text-sm opacity-80" id="displaySchoolName"></p>
+      </div>
+     </div>
+    </div><!-- Tabs -->
+    <div class="flex flex-wrap gap-2 mb-4"><button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active px-6 py-2 rounded-lg text-sm md:text-base"> Dashboard </button> <button onclick="switchTab('daily')" id="tab-daily" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Harian </button> <button onclick="switchTab('weekly')" id="tab-weekly" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Mingguan </button> <button onclick="switchTab('monthly')" id="tab-monthly" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Bulanan </button> <button onclick="switchTab('project')" id="tab-project" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Projek </button> <button onclick="exportToExcel()" class="btn-gold px-4 py-2 rounded-lg text-sm md:text-base flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg><span class="hidden sm:inline">Export Excel</span> <span class="sm:hidden">Excel</span> </button>
+    </div><!-- Current Date and Time Display -->
+    <div class="gradient-card rounded-xl p-4 mb-3">
+     <div class="text-center">
+      <p class="text-white text-xs opacity-70 mb-1">Tarikh &amp; Masa Terkini</p>
+      <p id="currentDateTime" class="text-white text-lg md:text-2xl font-bold"></p>
+     </div>
+    </div>
+   </div><!-- Add Activity Form -->
+   <div class="gradient-card rounded-2xl p-6 mb-6 shadow-xl">
+    <h2 class="text-white text-xl md:text-2xl font-semibold mb-4">Tambah Aktiviti Baru</h2>
+    <form id="activityForm" class="space-y-4">
+     <div><label class="text-white text-sm md:text-base mb-2 block">Tajuk Aktiviti</label> <input type="text" id="activityTitle" required class="w-full px-4 py-3 rounded-lg bg-white text-gray-800 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Masukkan tajuk aktiviti">
+     </div>
+     <div><label class="text-white text-sm md:text-base mb-2 block">Tarikh</label> <input type="date" id="activityDate" required class="w-full px-4 py-3 rounded-lg bg-white text-gray-800 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
+     </div>
+     <div><label class="text-white text-sm md:text-base mb-2 block">Masa</label> <input type="time" id="activityTime" required class="w-full px-4 py-3 rounded-lg bg-white text-gray-800 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-yellow-500">
+     </div><button type="submit" id="submitBtn" class="btn-gold w-full py-3 rounded-lg text-sm md:text-base flex items-center justify-center gap-2"> <span>Tambah Aktiviti</span> </button>
+    </form>
+   </div><!-- Activities List / Daily View / Weekly View -->
+   <div class="gradient-card rounded-2xl p-6 shadow-xl" id="mainView">
+    <h2 class="text-white text-xl md:text-2xl font-semibold mb-4" id="viewTitle">Senarai Aktiviti</h2>
+    <div id="activitiesList" class="space-y-3">
+     <p class="text-white text-center py-8 opacity-70">Tiada aktiviti lagi. Tambah aktiviti pertama anda!</p>
+    </div>
+   </div><!-- Footer -->
+   <div class="text-center mt-6">
+    <p id="copyrightText" class="text-white text-sm opacity-80">2025@ZAMBRIE BIN MOHAMMED</p>
+   </div>
+  </div>
+  <script>
+    let currentTab = 'dashboard';
+    let editingActivity = null;
+    let allActivities = [];
+    let notificationCheckInterval = null;
+    let snoozedUntil = null;
+    let shownNotifications = new Set();
+    let activityIdCounter = 1;
+    
+    const defaultConfig = {
+      planner_title: "Planner 2026",
+      user_name: "Nama Pengguna",
+      copyright_text: "2025@ZAMBRIE BIN MOHAMMED",
+      primary_color: "#d4af37",
+      secondary_color: "#1e3c72",
+      background_color: "#2a5298",
+      text_color: "#ffffff",
+      accent_color: "#f4d03f"
+    };
+
+    async function onConfigChange(config) {
+      const plannerTitle = config.planner_title || defaultConfig.planner_title;
+      const copyrightText = config.copyright_text || defaultConfig.copyright_text;
+      
+      document.getElementById('plannerTitle').textContent = plannerTitle;
+      document.getElementById('copyrightText').textContent = copyrightText;
+      
+      // Load saved user info if available
+      const savedUserName = localStorage.getItem('planner_user_name');
+      const savedSchoolName = localStorage.getItem('planner_school_name');
+      
+      if (savedUserName || savedSchoolName) {
+        document.getElementById('displayUserName').textContent = savedUserName || 'Nama Pengguna';
+        document.getElementById('displaySchoolName').textContent = savedSchoolName || '';
+        document.getElementById('userInfoDisplay').classList.remove('hidden');
+      }
+    }
+
+    async function initializeApp() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('activityDate').value = today;
+      
+      // Check if user is registered
+      checkUserRegistration();
+      
+      // Update current date and time
+      updateDateTime();
+      setInterval(updateDateTime, 1000);
+      
+      // Start notification checker - check every 30 seconds
+      notificationCheckInterval = setInterval(checkForNotifications, 30000);
+      // Check immediately on load
+      setTimeout(checkForNotifications, 5000);
+
+      if (window.elementSdk) {
+        window.elementSdk.init({
+          defaultConfig,
+          onConfigChange,
+          mapToCapabilities: (config) => ({
+            recolorables: [
+              {
+                get: () => config.primary_color || defaultConfig.primary_color,
+                set: (value) => {
+                  config.primary_color = value;
+                  window.elementSdk.setConfig({ primary_color: value });
+                }
+              },
+              {
+                get: () => config.secondary_color || defaultConfig.secondary_color,
+                set: (value) => {
+                  config.secondary_color = value;
+                  window.elementSdk.setConfig({ secondary_color: value });
+                }
+              },
+              {
+                get: () => config.background_color || defaultConfig.background_color,
+                set: (value) => {
+                  config.background_color = value;
+                  window.elementSdk.setConfig({ background_color: value });
+                }
+              },
+              {
+                get: () => config.text_color || defaultConfig.text_color,
+                set: (value) => {
+                  config.text_color = value;
+                  window.elementSdk.setConfig({ text_color: value });
+                }
+              },
+              {
+                get: () => config.accent_color || defaultConfig.accent_color,
+                set: (value) => {
+                  config.accent_color = value;
+                  window.elementSdk.setConfig({ accent_color: value });
+                }
+              }
+            ],
+            borderables: [],
+            fontEditable: undefined,
+            fontSizeable: undefined
+          }),
+          mapToEditPanelValues: (config) => new Map([
+            ["planner_title", config.planner_title || defaultConfig.planner_title],
+            ["user_name", config.user_name || defaultConfig.user_name],
+            ["copyright_text", config.copyright_text || defaultConfig.copyright_text]
+          ])
+        });
+      }
+    }
+    
+    function exportToExcel() {
+      if (allActivities.length === 0) {
+        showToast('Tiada data untuk diexport. Tambah aktiviti terlebih dahulu!', 'error');
+        return;
+      }
+      
+      showToast('Menyediakan fail Excel... ⏳', 'info');
+      
+      // Get user info
+      const userName = localStorage.getItem('planner_user_name') || 'Pengguna';
+      const schoolName = localStorage.getItem('planner_school_name') || '';
+      
+      // Sort activities by date
+      const sortedActivities = [...allActivities].sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+      // Create CSV content
+      let csvContent = '\uFEFF'; // UTF-8 BOM for Excel
+      
+      // Add header info
+      csvContent += `Planner 2026 - Senarai Aktiviti\n`;
+      csvContent += `Nama: ${userName}\n`;
+      if (schoolName) {
+        csvContent += `Sekolah: ${schoolName}\n`;
+      }
+      csvContent += `Tarikh Export: ${new Date().toLocaleString('ms-MY')}\n`;
+      csvContent += `Jumlah Aktiviti: ${sortedActivities.length}\n\n`;
+      
+      // Add table headers
+      csvContent += `Bil,Tajuk Aktiviti,Tarikh,Masa,Jenis,Tarikh Dicipta\n`;
+      
+      // Add data rows
+      sortedActivities.forEach((activity, index) => {
+        const row = [
+          index + 1,
+          `"${activity.title.replace(/"/g, '""')}"`,
+          activity.date,
+          activity.time || '-',
+          activity.type || 'Semua',
+          new Date(activity.createdAt).toLocaleString('ms-MY')
+        ];
+        csvContent += row.join(',') + '\n';
+      });
+      
+      // Create blob and download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      
+      const dateStr = new Date().toISOString().split('T')[0];
+      const filename = `Planner_2026_${userName.replace(/\s+/g, '_')}_${dateStr}.csv`;
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast(`✅ Fail Excel berjaya dimuat turun: ${filename}`, 'success');
+    }
+    
+    function checkForNotifications() {
+      if (snoozedUntil && new Date() < snoozedUntil) {
+        return;
+      }
+      
+      const now = new Date();
+      const upcomingActivities = [];
+      
+      allActivities.forEach(activity => {
+        const activityDateTime = new Date(activity.date + 'T' + (activity.time || '00:00'));
+        const timeDiff = activityDateTime - now;
+        const minutesDiff = Math.floor(timeDiff / 60000);
+        
+        if (minutesDiff >= -5 && minutesDiff <= 15) {
+          const notificationKey = activity.id + '-' + activity.date + '-' + activity.time;
+          
+          if (!shownNotifications.has(notificationKey)) {
+            upcomingActivities.push({
+              ...activity,
+              minutesDiff,
+              notificationKey
+            });
+          }
+        }
+      });
+      
+      if (upcomingActivities.length > 0) {
+        showNotificationModal(upcomingActivities);
+        upcomingActivities.forEach(activity => {
+          shownNotifications.add(activity.notificationKey);
+        });
+      }
+    }
+    
+    function showNotificationModal(activities) {
+      const modal = document.getElementById('notificationModal');
+      const list = document.getElementById('notificationList');
+      
+      list.innerHTML = activities.map(activity => {
+        const status = activity.minutesDiff < 0 ? 
+          `<span class="text-red-600 font-bold">⏰ TELAH BERMULA ${Math.abs(activity.minutesDiff)} minit lalu!</span>` :
+          activity.minutesDiff === 0 ? 
+          `<span class="text-orange-600 font-bold">⏰ BERMULA SEKARANG!</span>` :
+          `<span class="text-blue-600 font-semibold">🕐 Akan bermula dalam ${activity.minutesDiff} minit</span>`;
+        
+        return `
+          <div class="notification-item">
+            <div class="flex items-start gap-3">
+              <div class="flex-1">
+                <h3 class="text-lg font-bold text-gray-800 mb-1">${escapeHtml(activity.title)}</h3>
+                <p class="text-sm text-gray-600 mb-2">
+                  📅 ${formatDate(activity.date)} 
+                  ${activity.time ? '• ⏰ ' + activity.time : ''}
+                </p>
+                <div class="text-sm">${status}</div>
+              </div>
+              <button onclick="viewActivityDate('${activity.date}')" class="btn-blue px-3 py-2 rounded-lg text-xs whitespace-nowrap">
+                Lihat
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      modal.classList.remove('hidden');
+      playNotificationSound();
+    }
+    
+    function playNotificationSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+      } catch (e) {
+        console.log('Audio notification not available');
+      }
+    }
+    
+    function closeNotificationModal() {
+      document.getElementById('notificationModal').classList.add('hidden');
+    }
+    
+    function snoozeNotifications() {
+      snoozedUntil = new Date(new Date().getTime() + 5 * 60000);
+      closeNotificationModal();
+      showToast('Peringatan akan muncul semula dalam 5 minit ⏰', 'info');
+    }
+    
+    function viewActivityDate(dateString) {
+      closeNotificationModal();
+      document.getElementById('activityDate').value = dateString;
+      switchTab('daily');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function checkUserRegistration() {
+      const savedUserName = localStorage.getItem('planner_user_name');
+      const savedSchoolName = localStorage.getItem('planner_school_name');
+      
+      if (!savedUserName || !savedSchoolName) {
+        document.getElementById('welcomeModal').classList.remove('hidden');
+      } else {
+        document.getElementById('displayUserName').textContent = savedUserName;
+        document.getElementById('displaySchoolName').textContent = savedSchoolName;
+        document.getElementById('userInfoDisplay').classList.remove('hidden');
+      }
+    }
+    
+    document.getElementById('welcomeForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const userName = document.getElementById('modalUserName').value.trim();
+      const schoolName = document.getElementById('modalSchoolName').value.trim();
+      
+      if (userName && schoolName) {
+        localStorage.setItem('planner_user_name', userName);
+        localStorage.setItem('planner_school_name', schoolName);
+        
+        document.getElementById('displayUserName').textContent = userName;
+        document.getElementById('displaySchoolName').textContent = schoolName;
+        document.getElementById('userInfoDisplay').classList.remove('hidden');
+        
+        const modal = document.getElementById('welcomeModal');
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          modal.style.animation = '';
+        }, 300);
+        
+        showToast('Pendaftaran berjaya! Selamat menggunakan Planner 2026 🎉', 'success');
+      }
+    });
+    
+    function updateDateTime() {
+      const now = new Date();
+      const days = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
+      const months = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+      
+      const dayName = days[now.getDay()];
+      const day = now.getDate();
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      
+      const dateTimeString = `${dayName}, ${day} ${month} ${year} • ${hours}:${minutes}:${seconds}`;
+      document.getElementById('currentDateTime').textContent = dateTimeString;
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      
+      ['dashboard', 'daily', 'weekly', 'monthly', 'project'].forEach(t => {
+        const tabEl = document.getElementById(`tab-${t}`);
+        if (t === tab) {
+          tabEl.className = 'tab-active px-6 py-2 rounded-lg text-sm md:text-base';
+        } else {
+          tabEl.className = 'tab-inactive px-6 py-2 rounded-lg text-sm md:text-base';
+        }
+      });
+      
+      renderView();
+    }
+    
+    function renderProjectView() {
+      document.getElementById('viewTitle').textContent = 'Carta Gantt - Perancang Projek';
+      
+      const container = document.getElementById('activitiesList');
+      const sortedActivities = [...allActivities].sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+      if (sortedActivities.length === 0) {
+        container.innerHTML = '<p class="text-white text-center py-8 opacity-70">Tiada projek/tugas. Tambah projek pertama anda!</p>';
+        return;
+      }
+      
+      const dates = sortedActivities.map(a => new Date(a.date));
+      const minDate = new Date(Math.min(...dates));
+      const maxDate = new Date(Math.max(...dates));
+      
+      const weeks = [];
+      let currentWeek = new Date(minDate);
+      currentWeek.setDate(currentWeek.getDate() - currentWeek.getDay() + 1);
+      
+      while (currentWeek <= maxDate) {
+        weeks.push(new Date(currentWeek));
+        currentWeek.setDate(currentWeek.getDate() + 7);
+      }
+      
+      container.innerHTML = `
+        <div class="overflow-x-auto">
+          <div class="min-w-[800px]">
+            <div class="flex mb-4">
+              <div class="w-48 flex-shrink-0"></div>
+              <div class="flex-1 flex">
+                ${weeks.map(week => {
+                  const weekEnd = new Date(week);
+                  weekEnd.setDate(week.getDate() + 6);
+                  return `
+                    <div class="flex-1 text-center text-white text-xs font-semibold py-2 border-l border-white border-opacity-30">
+                      ${week.getDate()} ${getMonthName(week.getMonth())} - ${weekEnd.getDate()} ${getMonthName(weekEnd.getMonth())}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+            
+            <div class="space-y-2">
+              ${sortedActivities.map(activity => {
+                const activityDate = new Date(activity.date);
+                
+                let startWeekIndex = 0;
+                for (let i = 0; i < weeks.length; i++) {
+                  const weekEnd = new Date(weeks[i]);
+                  weekEnd.setDate(weekEnd.getDate() + 6);
+                  if (activityDate >= weeks[i] && activityDate <= weekEnd) {
+                    startWeekIndex = i;
+                    break;
+                  }
+                }
+                
+                const barWidth = 100 / weeks.length;
+                const barLeft = startWeekIndex * barWidth;
+                
+                return `
+                  <div class="flex items-center">
+                    <div class="w-48 flex-shrink-0 pr-4">
+                      <div class="bg-white rounded-lg p-2">
+                        <div class="font-semibold text-gray-800 text-sm truncate" title="${escapeHtml(activity.title)}">
+                          ${escapeHtml(activity.title)}
+                        </div>
+                        <div class="text-xs text-gray-600">
+                          ${formatDate(activity.date)}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex-1 relative h-12 bg-white bg-opacity-10 rounded">
+                      ${weeks.map((week, i) => `
+                        <div class="absolute top-0 h-full border-l border-white border-opacity-20" style="left: ${(i / weeks.length) * 100}%"></div>
+                      `).join('')}
+                      <div class="absolute top-2 h-8 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded flex items-center px-3 hover:shadow-lg transition-all cursor-pointer group" 
+                           style="left: ${barLeft}%; width: ${barWidth}%"
+                           onclick="editActivity('${activity.id}')">
+                        <span class="text-xs font-semibold text-gray-800 truncate group-hover:text-white transition-colors">
+                          ${escapeHtml(activity.title)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-6 gradient-card rounded-xl p-4">
+          <h3 class="text-white font-semibold mb-3">Legenda</h3>
+          <div class="flex flex-wrap gap-4 text-white text-sm">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-4 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded"></div>
+              <span>Tugas/Projek</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-white bg-opacity-10 rounded"></div>
+              <span>Minggu</span>
+            </div>
+          </div>
+          <p class="text-white text-xs mt-3 opacity-80">
+            Klik pada bar projek untuk mengedit. Setiap projek ditunjukkan mengikut tarikh pada timeline mingguan.
+          </p>
+        </div>
+      `;
+    }
+    
+    function renderView() {
+      if (currentTab === 'daily') {
+        renderDailyView();
+      } else if (currentTab === 'weekly') {
+        renderWeeklyView();
+      } else if (currentTab === 'monthly') {
+        renderMonthlyView();
+      } else if (currentTab === 'project') {
+        renderProjectView();
+      } else {
+        renderActivities(allActivities);
+      }
+    }
+    
+    function renderDailyView() {
+      const selectedDateValue = document.getElementById('dailyDatePicker') ? 
+        document.getElementById('dailyDatePicker').value : 
+        new Date().toISOString().split('T')[0];
+      const selectedDate = new Date(selectedDateValue + 'T00:00:00');
+      
+      document.getElementById('viewTitle').innerHTML = `
+        <div class="flex flex-col md:flex-row md:items-center gap-3">
+          <span>Perancang Harian</span>
+          <input type="date" id="dailyDatePicker" value="${selectedDateValue}" 
+                 onchange="renderDailyView()" 
+                 class="px-4 py-2 rounded-lg bg-white text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+        </div>
+      `;
+      
+      const container = document.getElementById('activitiesList');
+      const hours = Array.from({ length: 24 }, (_, i) => i);
+      
+      const dayActivities = allActivities.filter(activity => {
+        const activityDate = new Date(activity.date);
+        return activityDate.toDateString() === selectedDate.toDateString();
+      });
+      
+      container.innerHTML = `
+        <div class="daily-grid">
+          ${hours.map(hour => {
+            const hourActivities = dayActivities.filter(a => {
+              if (a.time) {
+                const activityHour = parseInt(a.time.split(':')[0]);
+                return activityHour === hour;
+              }
+              return false;
+            });
+            
+            return `
+              <div class="time-slot">
+                <div class="flex justify-between items-start mb-2">
+                  <span class="text-sm font-semibold text-gray-600">${hour.toString().padStart(2, '0')}:00</span>
+                  <button onclick="addActivityAtTime(${hour}, '${selectedDateValue}')" class="text-xs text-blue-600 hover:text-blue-800">+ Tambah</button>
+                </div>
+                <div class="space-y-1">
+                  ${hourActivities.map(activity => `
+                    <div class="text-sm text-gray-800 bg-yellow-50 p-2 rounded flex justify-between items-center">
+                      <div class="flex-1">
+                        <div class="font-semibold">${escapeHtml(activity.title)}</div>
+                        <div class="text-xs text-gray-600">${activity.time || ''}</div>
+                      </div>
+                      <div class="flex gap-1">
+                        <button onclick="editActivity('${activity.id}')" class="text-xs text-blue-600 hover:text-blue-800">Edit</button>
+                        <button onclick="deleteActivity('${activity.id}')" class="text-xs text-red-600 hover:text-red-800">Hapus</button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+    
+    function renderMonthlyView() {
+      const selectedDate = new Date();
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      
+      document.getElementById('viewTitle').textContent = `Kalendar Bulanan - ${getMonthName(month)} ${year}`;
+      
+      const container = document.getElementById('activitiesList');
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const totalDays = lastDay.getDate();
+      const startingDayOfWeek = firstDay.getDay();
+      const adjustedStart = startingDayOfWeek === 0 ? 6 : startingDayOfWeek - 1;
+      
+      const days = ['Isn', 'Sel', 'Rab', 'Kha', 'Jum', 'Sab', 'Ahd'];
+      
+      let calendarHTML = `
+        <div class="mb-4">
+          <div class="grid grid-cols-7 gap-2 mb-2">
+            ${days.map(day => `
+              <div class="text-center font-bold text-white text-xs md:text-sm py-2">
+                ${day}
+              </div>
+            `).join('')}
+          </div>
+          <div class="grid grid-cols-7 gap-2">
+      `;
+      
+      for (let i = 0; i < adjustedStart; i++) {
+        calendarHTML += `<div class="bg-white bg-opacity-20 rounded-lg p-2 min-h-[80px]"></div>`;
+      }
+      
+      for (let day = 1; day <= totalDays; day++) {
+        const currentDate = new Date(year, month, day);
+        const dateString = currentDate.toISOString().split('T')[0];
+        const dayOfWeek = currentDate.getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        const isToday = currentDate.toDateString() === new Date().toDateString();
+        
+        const dayActivities = allActivities.filter(activity => {
+          const activityDate = new Date(activity.date);
+          return activityDate.toDateString() === currentDate.toDateString();
+        });
+        
+        calendarHTML += `
+          <div class="bg-white rounded-lg p-2 min-h-[80px] ${isWeekend ? 'bg-blue-50' : ''} ${isToday ? 'ring-2 ring-yellow-400' : ''} hover:shadow-lg transition-all cursor-pointer" onclick="selectMonthDate('${dateString}')">
+            <div class="text-xs md:text-sm font-semibold ${isToday ? 'text-yellow-600' : 'text-gray-800'} mb-1">
+              ${day}
+            </div>
+            <div class="space-y-1">
+              ${dayActivities.slice(0, 2).map(activity => `
+                <div class="text-xs bg-yellow-100 px-1 py-0.5 rounded truncate" title="${escapeHtml(activity.title)}">
+                  ${escapeHtml(activity.title)}
+                </div>
+              `).join('')}
+              ${dayActivities.length > 2 ? `<div class="text-xs text-gray-600">+${dayActivities.length - 2} lagi</div>` : ''}
+            </div>
+          </div>
+        `;
+      }
+      
+      calendarHTML += `
+          </div>
+        </div>
+      `;
+      
+      container.innerHTML = calendarHTML;
+    }
+    
+    function selectMonthDate(dateString) {
+      document.getElementById('activityDate').value = dateString;
+      switchTab('daily');
+    }
+    
+    function renderWeeklyView() {
+      const selectedDate = new Date();
+      const weekStart = new Date(selectedDate);
+      const dayOfWeek = weekStart.getDay();
+      const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+      weekStart.setDate(weekStart.getDate() + diff);
+      
+      const weekNumber = getWeekNumber(weekStart);
+      
+      document.getElementById('viewTitle').innerHTML = `
+        <div class="flex items-center gap-3 flex-wrap">
+          <span>Perancang Mingguan</span>
+          <span class="week-number">Minggu ${weekNumber}</span>
+        </div>
+      `;
+      
+      const container = document.getElementById('activitiesList');
+      const days = ['Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu', 'Ahad'];
+      const weekDays = [];
+      
+      for (let i = 0; i < 7; i++) {
+        const day = new Date(weekStart);
+        day.setDate(weekStart.getDate() + i);
+        weekDays.push(day);
+      }
+      
+      container.innerHTML = `
+        <div class="weekly-grid">
+          ${weekDays.map((day, index) => {
+            const isWeekend = index === 5 || index === 6;
+            const dayActivities = allActivities.filter(activity => {
+              const activityDate = new Date(activity.date);
+              return activityDate.toDateString() === day.toDateString();
+            });
+            
+            return `
+              <div class="day-card ${isWeekend ? 'weekend' : ''}">
+                <div class="mb-3">
+                  <h3 class="font-bold text-lg ${isWeekend ? 'text-blue-800' : 'text-gray-800'}">${days[index]}</h3>
+                  <p class="text-xs text-gray-600">${day.getDate()} ${getMonthName(day.getMonth())} ${day.getFullYear()}</p>
+                  ${isWeekend ? '<span class="text-xs font-semibold text-blue-600">Hujung Minggu</span>' : ''}
+                </div>
+                <button onclick="addActivityForDate('${day.toISOString().split('T')[0]}')" class="w-full text-xs btn-blue py-2 rounded mb-3">
+                  + Tambah Aktiviti
+                </button>
+                <div class="space-y-2">
+                  ${dayActivities.length === 0 ? '<p class="text-xs text-gray-400 italic">Tiada aktiviti</p>' : ''}
+                  ${dayActivities.map(activity => `
+                    <div class="bg-yellow-50 p-2 rounded text-xs">
+                      <div class="font-medium text-gray-800 mb-1">${escapeHtml(activity.title)}</div>
+                      <div class="flex gap-1">
+                        <button onclick="editActivity('${activity.id}')" class="text-blue-600 hover:text-blue-800">Edit</button>
+                        <button onclick="deleteActivity('${activity.id}')" class="text-red-600 hover:text-red-800">Hapus</button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+    
+    function getWeekNumber(date) {
+      const startOfYear = new Date(date.getFullYear(), 0, 1);
+      const days = Math.floor((date - startOfYear) / (24 * 60 * 60 * 1000));
+      return Math.ceil((days + startOfYear.getDay() + 1) / 7);
+    }
+    
+    function getMonthName(month) {
+      const months = ['Jan', 'Feb', 'Mac', 'Apr', 'Mei', 'Jun', 'Jul', 'Ogos', 'Sep', 'Okt', 'Nov', 'Dis'];
+      return months[month];
+    }
+    
+    function addActivityAtTime(hour, dateValue) {
+      const selectedDate = dateValue || new Date().toISOString().split('T')[0];
+      const timeValue = hour.toString().padStart(2, '0') + ':00';
+      
+      document.getElementById('activityDate').value = selectedDate;
+      document.getElementById('activityTime').value = timeValue;
+      document.getElementById('activityTitle').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(`Tambah aktiviti untuk ${hour.toString().padStart(2, '0')}:00`, 'info');
+    }
+    
+    function addActivityForDate(date) {
+      document.getElementById('activityDate').value = date;
+      document.getElementById('activityTitle').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('Tambah aktiviti untuk tarikh dipilih', 'info');
+    }
+
+    function renderActivities(data) {
+      const container = document.getElementById('activitiesList');
+      document.getElementById('viewTitle').textContent = 'Senarai Aktiviti';
+      
+      if (data.length === 0) {
+        container.innerHTML = '<p class="text-white text-center py-8 opacity-70">Tiada aktiviti lagi. Tambah aktiviti pertama anda!</p>';
+        return;
+      }
+
+      const filteredData = filterActivities(data);
+      
+      if (filteredData.length === 0) {
+        container.innerHTML = '<p class="text-white text-center py-8 opacity-70">Tiada aktiviti untuk paparan ini.</p>';
+        return;
+      }
+
+      const sortedData = [...filteredData].sort((a, b) => new Date(a.date) - new Date(b.date));
+      
+      container.innerHTML = sortedData.map(activity => `
+        <div class="activity-card rounded-xl p-4 shadow-md" id="activity-${activity.id}">
+          <div class="flex items-start justify-between">
+            <div class="flex-1">
+              <h3 class="text-gray-800 font-semibold text-base md:text-lg mb-1">${escapeHtml(activity.title)}</h3>
+              <p class="text-gray-600 text-sm">${formatDate(activity.date)}${activity.time ? ' • ' + activity.time : ''} • ${activity.type}</p>
+            </div>
+            <div class="flex gap-2 ml-2">
+              <button onclick="editActivity('${activity.id}')" class="btn-blue px-3 py-2 rounded-lg text-xs md:text-sm">
+                Edit
+              </button>
+              <button onclick="deleteActivity('${activity.id}')" class="btn-outline px-3 py-2 rounded-lg text-xs md:text-sm">
+                Hapus
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterActivities(data) {
+      if (currentTab === 'dashboard') {
+        return data;
+      }
+      
+      const selectedDate = new Date();
+      
+      return data.filter(activity => {
+        const activityDate = new Date(activity.date);
+        
+        if (currentTab === 'daily') {
+          return activityDate.toDateString() === selectedDate.toDateString();
+        } else if (currentTab === 'weekly') {
+          const weekStart = new Date(selectedDate);
+          weekStart.setDate(selectedDate.getDate() - selectedDate.getDay());
+          const weekEnd = new Date(weekStart);
+          weekEnd.setDate(weekStart.getDate() + 6);
+          return activityDate >= weekStart && activityDate <= weekEnd;
+        } else if (currentTab === 'monthly') {
+          return activityDate.getMonth() === selectedDate.getMonth() && 
+                 activityDate.getFullYear() === selectedDate.getFullYear();
+        }
+        
+        return true;
+      });
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      return date.toLocaleDateString('ms-MY', options);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    document.getElementById('activityForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const title = document.getElementById('activityTitle').value;
+      const date = document.getElementById('activityDate').value;
+      const time = document.getElementById('activityTime').value;
+      
+      if (editingActivity) {
+        editingActivity.title = title;
+        editingActivity.date = date;
+        editingActivity.time = time;
+        editingActivity.type = currentTab === 'dashboard' ? 'Semua' : 
+                               currentTab === 'daily' ? 'Harian' :
+                               currentTab === 'weekly' ? 'Mingguan' : 'Bulanan';
+        
+        showToast('Aktiviti berjaya dikemas kini!', 'success');
+        document.getElementById('activityForm').reset();
+        document.getElementById('activityDate').value = new Date().toISOString().split('T')[0];
+        editingActivity = null;
+        document.getElementById('submitBtn').innerHTML = '<span>Tambah Aktiviti</span>';
+        renderView();
+      } else {
+        const newActivity = {
+          id: 'act-' + activityIdCounter++,
+          title: title,
+          date: date,
+          time: time,
+          type: currentTab === 'dashboard' ? 'Semua' : 
+                currentTab === 'daily' ? 'Harian' :
+                currentTab === 'weekly' ? 'Mingguan' : 'Bulanan',
+          createdAt: new Date().toISOString()
+        };
+        
+        allActivities.push(newActivity);
+        
+        showToast('Aktiviti berjaya ditambah!', 'success');
+        document.getElementById('activityForm').reset();
+        document.getElementById('activityDate').value = new Date().toISOString().split('T')[0];
+        renderView();
+      }
+    });
+
+    function editActivity(activityId) {
+      const activity = allActivities.find(a => a.id === activityId);
+      if (!activity) {
+        showToast('Aktiviti tidak dijumpai', 'error');
+        return;
+      }
+      
+      editingActivity = activity;
+      
+      document.getElementById('activityTitle').value = activity.title;
+      document.getElementById('activityDate').value = activity.date;
+      document.getElementById('activityTime').value = activity.time || '';
+      document.getElementById('submitBtn').innerHTML = '<span>Kemaskini Aktiviti</span>';
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast('Edit aktiviti dan klik "Kemaskini Aktiviti"', 'info');
+    }
+
+    function deleteActivity(activityId) {
+      const index = allActivities.findIndex(a => a.id === activityId);
+      if (index === -1) {
+        showToast('Aktiviti tidak dijumpai', 'error');
+        return;
+      }
+      
+      allActivities.splice(index, 1);
+      showToast('Aktiviti berjaya dihapus!', 'success');
+      renderView();
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      
+      const colors = {
+        success: '#10b981',
+        error: '#ef4444',
+        info: '#3b82f6'
+      };
+      
+      toast.innerHTML = `
+        <div class="flex items-center gap-3">
+          <div style="width: 4px; height: 40px; background: ${colors[type]}; border-radius: 2px;"></div>
+          <p class="text-gray-800 text-sm md:text-base">${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    initializeApp();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b55810ba7cf3cd8',t:'MTc2Njk3MTUzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
