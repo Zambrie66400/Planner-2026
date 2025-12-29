@@ -326,7 +326,9 @@
     </div><!-- Tabs -->
     <div class="flex flex-wrap gap-2 mb-4"><button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active px-6 py-2 rounded-lg text-sm md:text-base"> Dashboard </button> <button onclick="switchTab('daily')" id="tab-daily" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Harian </button> <button onclick="switchTab('weekly')" id="tab-weekly" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Mingguan </button> <button onclick="switchTab('monthly')" id="tab-monthly" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Bulanan </button> <button onclick="switchTab('project')" id="tab-project" class="tab-inactive px-6 py-2 rounded-lg text-sm md:text-base"> Projek </button> <button onclick="exportToExcel()" class="btn-gold px-4 py-2 rounded-lg text-sm md:text-base flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-      </svg><span class="hidden sm:inline">Export Excel</span> <span class="sm:hidden">Excel</span> </button>
+      </svg><span class="hidden sm:inline">Export Excel</span> <span class="sm:hidden">Export</span> </button> <button onclick="document.getElementById('importFileInput').click()" class="btn-blue px-4 py-2 rounded-lg text-sm md:text-base flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+      </svg><span class="hidden sm:inline">Import Excel</span> <span class="sm:hidden">Import</span> </button> <input type="file" id="importFileInput" accept=".csv,.xlsx,.xls" style="display: none;" onchange="importFromExcel(event)">
     </div><!-- Current Date and Time Display -->
     <div class="gradient-card rounded-xl p-4 mb-3">
      <div class="text-center">
@@ -524,6 +526,152 @@
       document.body.removeChild(link);
       
       showToast(`✅ Fail Excel berjaya dimuat turun: ${filename}`, 'success');
+    }
+    
+    function importFromExcel(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        return;
+      }
+      
+      showToast('Membaca fail Excel... ⏳', 'info');
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const text = e.target.result;
+          const lines = text.split('\n');
+          
+          // Find the header line (starts with "Bil,")
+          let headerIndex = -1;
+          for (let i = 0; i < lines.length; i++) {
+            if (lines[i].trim().startsWith('Bil,') || lines[i].trim().startsWith('Bil;')) {
+              headerIndex = i;
+              break;
+            }
+          }
+          
+          if (headerIndex === -1) {
+            showToast('❌ Format fail tidak sah. Pastikan fail Excel daripada sistem ini.', 'error');
+            event.target.value = ''; // Reset input
+            return;
+          }
+          
+          // Detect delimiter (comma or semicolon)
+          const delimiter = lines[headerIndex].includes(';') ? ';' : ',';
+          
+          const importedActivities = [];
+          let importedCount = 0;
+          let skippedCount = 0;
+          
+          // Process data rows (start from headerIndex + 1)
+          for (let i = headerIndex + 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            // Parse CSV line (handle quoted values)
+            const values = parseCSVLine(line, delimiter);
+            
+            if (values.length >= 4) { // At least: Bil, Title, Date, Time
+              const title = values[1].replace(/^"|"$/g, '').replace(/""/g, '"').trim();
+              const date = values[2].trim();
+              const time = values[3].trim();
+              const type = values[4] ? values[4].trim() : 'Semua';
+              
+              // Validate data
+              if (title && date && date !== '-') {
+                // Check if activity already exists (by title, date, and time)
+                const exists = allActivities.some(a => 
+                  a.title === title && 
+                  a.date === date && 
+                  a.time === (time === '-' ? '' : time)
+                );
+                
+                if (!exists) {
+                  const newActivity = {
+                    id: 'act-' + activityIdCounter++,
+                    title: title,
+                    date: date,
+                    time: time === '-' ? '' : time,
+                    type: type,
+                    createdAt: new Date().toISOString()
+                  };
+                  
+                  importedActivities.push(newActivity);
+                  importedCount++;
+                } else {
+                  skippedCount++;
+                }
+              }
+            }
+          }
+          
+          if (importedCount > 0) {
+            // Add imported activities to the list
+            allActivities.push(...importedActivities);
+            renderView();
+            
+            let message = `✅ ${importedCount} aktiviti berjaya diimport!`;
+            if (skippedCount > 0) {
+              message += ` (${skippedCount} aktiviti diduplikasi telah dilangkau)`;
+            }
+            showToast(message, 'success');
+          } else {
+            if (skippedCount > 0) {
+              showToast(`ℹ️ Semua aktiviti dalam fail sudah wujud (${skippedCount} duplikasi dilangkau)`, 'info');
+            } else {
+              showToast('❌ Tiada data yang sah dijumpai dalam fail', 'error');
+            }
+          }
+          
+        } catch (error) {
+          console.error('Import error:', error);
+          showToast('❌ Ralat membaca fail. Pastikan format fail adalah betul.', 'error');
+        }
+        
+        // Reset file input
+        event.target.value = '';
+      };
+      
+      reader.onerror = function() {
+        showToast('❌ Ralat membaca fail. Sila cuba lagi.', 'error');
+        event.target.value = '';
+      };
+      
+      reader.readAsText(file, 'UTF-8');
+    }
+    
+    function parseCSVLine(line, delimiter = ',') {
+      const values = [];
+      let currentValue = '';
+      let insideQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+          if (insideQuotes && nextChar === '"') {
+            // Escaped quote
+            currentValue += '"';
+            i++; // Skip next quote
+          } else {
+            // Toggle quote state
+            insideQuotes = !insideQuotes;
+          }
+        } else if (char === delimiter && !insideQuotes) {
+          // End of value
+          values.push(currentValue);
+          currentValue = '';
+        } else {
+          currentValue += char;
+        }
+      }
+      
+      // Add last value
+      values.push(currentValue);
+      
+      return values;
     }
     
     function checkForNotifications() {
@@ -1230,5 +1378,5 @@
 
     initializeApp();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b55810ba7cf3cd8',t:'MTc2Njk3MTUzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b5885ffb011b4d0',t:'MTc2NzAwMzE5Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
